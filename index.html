@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gemini Blog</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Inter', 'sans-serif'],
+            },
+            colors: {
+              border: "hsl(214.3 31.8% 91.4%)",
+              input: "hsl(214.3 31.8% 91.4%)",
+              ring: "hsl(222.2 84% 4.9%)",
+              background: "hsl(0 0% 100%)",
+              foreground: "hsl(222.2 84% 4.9%)",
+              primary: {
+                DEFAULT: "hsl(222.2 47.4% 11.2%)",
+                foreground: "hsl(210 40% 98%)",
+              },
+              secondary: {
+                DEFAULT: "hsl(210 40% 96.1%)",
+                foreground: "hsl(222.2 47.4% 11.2%)",
+              },
+              destructive: {
+                DEFAULT: "hsl(0 84.2% 60.2%)",
+                foreground: "hsl(210 40% 98%)",
+              },
+              muted: {
+                DEFAULT: "hsl(210 40% 96.1%)",
+                foreground: "hsl(215.4 16.3% 46.9%)",
+              },
+              accent: {
+                DEFAULT: "hsl(210 40% 96.1%)",
+                foreground: "hsl(222.2 47.4% 11.2%)",
+              },
+              popover: {
+                DEFAULT: "hsl(0 0% 100%)",
+                foreground: "hsl(222.2 84% 4.9%)",
+              },
+              card: {
+                DEFAULT: "hsl(0 0% 100%)",
+                foreground: "hsl(222.2 84% 4.9%)",
+              },
+              dark: {
+                border: "hsl(217 32.6% 17.5%)",
+                input: "hsl(217 32.6% 17.5%)",
+                ring: "hsl(212.7 26.8% 83.9%)",
+                background: "hsl(222.2 84% 4.9%)",
+                foreground: "hsl(210 40% 98%)",
+                primary: {
+                  DEFAULT: "hsl(210 40% 98%)",
+                  foreground: "hsl(222.2 47.4% 11.2%)",
+                },
+                secondary: {
+                  DEFAULT: "hsl(217.2 32.6% 17.5%)",
+                  foreground: "hsl(210 40% 98%)",
+                },
+                destructive: {
+                  DEFAULT: "hsl(0 62.8% 30.6%)",
+                  foreground: "hsl(210 40% 98%)",
+                },
+                muted: {
+                  DEFAULT: "hsl(217.2 32.6% 17.5%)",
+                  foreground: "hsl(215 20.2% 65.1%)",
+                },
+                accent: {
+                  DEFAULT: "hsl(217.2 32.6% 17.5%)",
+                  foreground: "hsl(210 40% 98%)",
+                },
+                popover: {
+                  DEFAULT: "hsl(222.2 84% 4.9%)",
+                  foreground: "hsl(210 40% 98%)",
+                },
+                card: {
+                  DEFAULT: "hsl(222.2 84% 4.9%)",
+                  foreground: "hsl(210 40% 98%)",
+                },
+              },
+            }
+          }
+        }
+      }
+    </script>
+  <script type="importmap">
+{
+  "imports": {
+    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.20.0",
+    "@supabase/supabase-js": "https://aistudiocdn.com/@supabase/supabase-js@^2.45.0",
+    "react-router-dom": "https://aistudiocdn.com/react-router-dom@^7.9.2",
+    "react/": "https://aistudiocdn.com/react@^19.1.1/",
+    "react": "https://aistudiocdn.com/react@^19.1.1",
+    "react-markdown": "https://aistudiocdn.com/react-markdown@^10.1.0",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.1.1/",
+    "framer-motion": "https://aistudiocdn.com/framer-motion@^12.23.22"
+  }
+}
+</script>
+</head>
+  <body class="bg-background text-foreground dark:bg-dark-background dark:text-dark-foreground antialiased">
+    <div id="root"></div>
+    <script type="module" src="/index.tsx"></script>
+  </body>
+</html>

@@ -1,0 +1,5 @@
+{
+  "name": "Gemini Blog",
+  "description": "A beautiful, modern AI-Powered Blog Platform using React, TailwindCSS, and the Gemini API for AI summaries. It features a markdown editor, full-text search, and a clean, responsive UI with dark mode.",
+  "requestFramePermissions": []
+}
