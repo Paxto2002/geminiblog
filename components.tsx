@@ -68,25 +68,42 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const getSession = async () => {
-            const { data: { session } } = await supabase.auth.getSession();
+        const setAuthData = async (session: Session | null) => {
             setSession(session);
             if (session?.user) {
-                const { data: profile } = await supabase.from('profiles').select('*').eq('id', session.user.id).single();
-                setUser(profile as Profile);
-            }
-            setLoading(false);
-        };
-        getSession();
-
-        const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
-            setSession(session);
-            if (session?.user) {
-                const { data: profile } = await supabase.from('profiles').select('*').eq('id', session.user.id).single();
-                setUser(profile as Profile);
+                const { data: profile } = await supabase
+                    .from('profiles')
+                    .select('*')
+                    .eq('id', session.user.id)
+                    .single();
+                
+                if (profile) {
+                    setUser(profile as Profile);
+                } else {
+                    // This is a fallback for when a user is authenticated but has no profile yet.
+                    // This can happen if the `handle_new_user` trigger hasn't run or failed.
+                    console.warn(`No profile found for user ${session.user.id}. Using fallback data.`);
+                    setUser({
+                        id: session.user.id,
+                        name: session.user.email || 'New User',
+                        image: undefined,
+                    });
+                }
             } else {
                 setUser(null);
             }
+        };
+
+        const getInitialSession = async () => {
+            const { data: { session } } = await supabase.auth.getSession();
+            await setAuthData(session);
+            setLoading(false);
+        };
+        
+        getInitialSession();
+
+        const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
+            await setAuthData(session);
         });
 
         return () => subscription.unsubscribe();
