@@ -103,10 +103,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         };
 
         const getInitialSession = async () => {
-            // FIX: Use the correct v2 API `getSession()` which returns a promise.
-            const { data: { session } } = await supabase.auth.getSession();
-            await setAuthData(session);
-            setLoading(false);
+            try {
+                const { data: { session } } = await supabase.auth.getSession();
+                await setAuthData(session);
+            } catch (error) {
+                console.error("Error during initial session fetch:", error);
+                setUser(null);
+                setSession(null);
+            } finally {
+                setLoading(false);
+            }
         };
         
         getInitialSession();
@@ -205,7 +211,6 @@ export const UserNav = () => {
         e.preventDefault();
         setLoading(true);
         setMessage('');
-        // FIX: Use the correct v2 API `signInWithOtp` for magic link.
         const { error } = await supabase.auth.signInWithOtp({ email });
         if (error) {
             setMessage(error.message);
