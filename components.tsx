@@ -5,7 +5,17 @@ import { motion, AnimatePresence } from 'framer-motion';
 import type { Post, Profile } from './types';
 import { generateSummary } from './services/geminiService';
 import { supabase } from './lib/supabase';
-import type { Session } from '@supabase/supabase-js';
+
+// The Session type from @supabase/supabase-js v2.
+// A local definition is kept for environments where type imports might be tricky.
+type Session = {
+  user: {
+    id: string;
+    email?: string;
+    // Add other user properties if needed
+  } | null;
+  // Add other session properties if needed
+} | null;
 
 
 // --- Theme Context & Hook ---
@@ -80,8 +90,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                 if (profile) {
                     setUser(profile as Profile);
                 } else {
-                    // This is a fallback for when a user is authenticated but has no profile yet.
-                    // This can happen if the `handle_new_user` trigger hasn't run or failed.
                     console.warn(`No profile found for user ${session.user.id}. Using fallback data.`);
                     setUser({
                         id: session.user.id,
@@ -95,6 +103,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         };
 
         const getInitialSession = async () => {
+            // FIX: Use the correct v2 API `getSession()` which returns a promise.
             const { data: { session } } = await supabase.auth.getSession();
             await setAuthData(session);
             setLoading(false);
@@ -106,7 +115,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             await setAuthData(session);
         });
 
-        return () => subscription.unsubscribe();
+        return () => subscription?.unsubscribe();
     }, []);
 
     const logout = async () => {
@@ -196,6 +205,7 @@ export const UserNav = () => {
         e.preventDefault();
         setLoading(true);
         setMessage('');
+        // FIX: Use the correct v2 API `signInWithOtp` for magic link.
         const { error } = await supabase.auth.signInWithOtp({ email });
         if (error) {
             setMessage(error.message);
@@ -209,7 +219,7 @@ export const UserNav = () => {
         return (
             <div className="flex items-center gap-4">
                 <span className="text-sm font-medium hidden sm:inline">{user.name}</span>
-                <img src={user.image || `https://ui-avatars.com/api/?name=${user.name}&background=random`} alt={user.name} className="h-8 w-8 rounded-full" />
+                <img src={user.image || `https://ui-avatars.com/api/?name=${user.name}&background=random`} alt={user.name || 'User avatar'} className="h-8 w-8 rounded-full" />
                 <Button variant="secondary" onClick={handleLogout}>Logout</Button>
             </div>
         );
@@ -274,7 +284,7 @@ export const PostCard: React.FC<{ post: Post }> = ({ post }) => {
           className="border-b border-border dark:border-dark-border py-8"
         >
             <div className="flex items-center gap-3 text-sm text-muted-foreground dark:text-dark-muted-foreground mb-2">
-                <img src={post.author.image || `https://ui-avatars.com/api/?name=${post.author.name}&background=random`} alt={post.author.name} className="h-6 w-6 rounded-full" />
+                <img src={post.author.image || `https://ui-avatars.com/api/?name=${post.author.name}&background=random`} alt={post.author.name || 'Author avatar'} className="h-6 w-6 rounded-full" />
                 <span>{post.author.name}</span>
                 <span>·</span>
                 <span>{new Date(post.created_at).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</span>

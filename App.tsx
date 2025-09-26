@@ -121,7 +121,7 @@ const PostPage = () => {
             <div className="mb-8">
                 <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight">{post.title}</h1>
                 <div className="flex items-center gap-3 text-sm text-muted-foreground dark:text-dark-muted-foreground mt-4">
-                    <img src={post.author.image || `https://ui-avatars.com/api/?name=${post.author.name}&background=random`} alt={post.author.name} className="h-8 w-8 rounded-full" />
+                    <img src={post.author.image || `https://ui-avatars.com/api/?name=${post.author.name}&background=random`} alt={post.author.name || 'Author avatar'} className="h-8 w-8 rounded-full" />
                     <span>{post.author.name}</span>
                     <span>·</span>
                     <span>{new Date(post.created_at).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
@@ -150,7 +150,7 @@ const PostPage = () => {
                 <div className="space-y-6">
                     {post.comments?.map(comment => (
                         <div key={comment.id} className="flex gap-4">
-                            <img src={comment.user.image || `https://ui-avatars.com/api/?name=${comment.user.name}&background=random`} alt={comment.user.name} className="h-10 w-10 rounded-full mt-1" />
+                            <img src={comment.user.image || `https://ui-avatars.com/api/?name=${comment.user.name}&background=random`} alt={comment.user.name || 'User avatar'} className="h-10 w-10 rounded-full mt-1" />
                             <div className="flex-1">
                                 <div className="flex items-baseline gap-2">
                                     <span className="font-semibold">{comment.user.name}</span>
